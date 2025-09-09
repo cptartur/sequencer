@@ -11,23 +11,27 @@ pub fn install_compiler_binary(
     out_dir: &std::path::Path,
 ) {
     let binary_path = binary_path(out_dir, binary_name);
-    match Command::new(&binary_path).args(["--version"]).output() {
-        Ok(binary_version) => {
-            let binary_version = String::from_utf8(binary_version.stdout)
-                .expect("Failed to convert the binary version to a string.");
-            if binary_version.contains(required_version) {
-                println!("The {binary_name} binary is up to date.");
-                return;
-            } else {
-                println!(
-                    "The {binary_name} binary is not up to date. Installing the required version."
-                );
-                std::fs::remove_file(&binary_path).expect("Failed to remove the old binary.");
+    if binary_path.exists() {
+        match Command::new(&binary_path).args(["--version"]).output() {
+            Ok(binary_version) => {
+                let binary_version = String::from_utf8(binary_version.stdout)
+                    .expect("Failed to convert the binary version to a string.");
+                if binary_version.contains(required_version) {
+                    println!("The {binary_name} binary is up to date.");
+                    return;
+                } else {
+                    println!(
+                        "The {binary_name} binary is not up to date. Installing the required version."
+                    );
+                    std::fs::remove_file(&binary_path).expect("Failed to remove the old binary.");
+                }
+            }
+            Err(_) => {
+                println!("The {binary_name} binary is not installed. Installing the required version.");
             }
         }
-        Err(_) => {
-            println!("The {binary_name} binary is not installed. Installing the required version.");
-        }
+    } else {
+        println!("The {binary_name} binary is not installed. Installing the required version.");
     }
 
     let temp_cargo_path = TempDir::new().expect("Failed to create a temporary directory.");
