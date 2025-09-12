@@ -21,16 +21,13 @@ pub fn install_compiler_binary(
                     return;
                 } else {
                     println!(
-                        "The {binary_name} binary is not up to date. Installing the required \
-                         version."
+                        "The {binary_name} binary is not up to date. Installing the required version."
                     );
                     std::fs::remove_file(&binary_path).expect("Failed to remove the old binary.");
                 }
             }
             Err(_) => {
-                println!(
-                    "The {binary_name} binary is not installed. Installing the required version."
-                );
+                println!("The {binary_name} binary is not installed. Installing the required version.");
             }
         }
     } else {
