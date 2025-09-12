@@ -13,7 +13,7 @@ workspace = true
 cairo_native = [
   "blockifier_test_utils/cairo_native",
   "dep:apollo_compilation_utils",
-  "dep:apollo_compile_to_native",
+#  "dep:apollo_compile_to_native",
   "dep:cairo-native",
 ]
 mocks = []
