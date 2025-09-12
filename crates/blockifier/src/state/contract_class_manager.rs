@@ -1,9 +1,9 @@
 pub const DEFAULT_COMPILATION_REQUEST_CHANNEL_SIZE: usize = 2000;
 
-#[cfg(feature = "cairo_native")]
+#[cfg(all(feature = "cairo_native", feature = "cairo_native_execution"))]
 pub use crate::state::native_class_manager::NativeClassManager as ContractClassManager;
 
-#[cfg(not(feature = "cairo_native"))]
+#[cfg(all(not(feature = "cairo_native"), not(feature = "cairo_native_execution")))]
 pub mod trivial_class_manager {
     #[cfg(any(feature = "testing", test))]
     use cached::Cached;
@@ -48,5 +48,42 @@ pub mod trivial_class_manager {
     }
 }
 
-#[cfg(not(feature = "cairo_native"))]
+#[cfg(all(not(feature = "cairo_native"), not(feature = "cairo_native_execution")))]
 pub use trivial_class_manager::TrivialClassManager as ContractClassManager;
+
+#[cfg(all(not(feature = "cairo_native"), feature = "cairo_native_execution"))]
+pub mod mock_class_manager {
+    use starknet_api::core::ClassHash;
+
+    use crate::blockifier::config::ContractClassManagerConfig;
+    use crate::execution::contract_class::RunnableCompiledClass;
+    use crate::state::global_cache::{CompiledClasses, RawClassCache};
+
+    pub struct MockClassManager;
+
+    impl MockClassManager {
+        pub fn start(config: ContractClassManagerConfig) -> Self {
+            Self
+        }
+
+        pub fn get_runnable(&self, class_hash: &ClassHash) -> Option<RunnableCompiledClass> {
+            unimplemented!("Native compilation is not supported")
+        }
+
+        pub fn set_and_compile(&self, class_hash: ClassHash, compiled_class: CompiledClasses) {
+            unimplemented!("Native compilation is not supported")
+        }
+
+        pub fn clear(&mut self) {
+            unimplemented!("Native compilation is not supported")
+        }
+
+        #[cfg(any(feature = "testing", test))]
+        pub fn get_cache_size(&self) -> usize {
+            unimplemented!("Native compilation is not supported")
+        }
+    }
+}
+
+#[cfg(all(not(feature = "cairo_native"), feature = "cairo_native_execution"))]
+pub use mock_class_manager::MockClassManager as ContractClassManager;
