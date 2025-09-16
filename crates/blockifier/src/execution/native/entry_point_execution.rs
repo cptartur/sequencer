@@ -1,5 +1,6 @@
 use cairo_native::execution_result::{BuiltinStats, ContractExecutionResult};
 use cairo_native::utils::BuiltinCosts;
+use cairo_native::executor::ContractExecutor;
 use cairo_vm::types::builtin_name::BuiltinName;
 
 use crate::execution::call_info::{BuiltinCounterMap, CallExecution, CallInfo, Retdata};

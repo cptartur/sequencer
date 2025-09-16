@@ -9,7 +9,7 @@ use cairo_lang_starknet_classes::casm_contract_class::CasmContractClass;
 #[cfg(feature = "cairo_native")]
 use cairo_lang_starknet_classes::contract_class::ContractClass as SierraContractClass;
 #[cfg(feature = "cairo_native")]
-use cairo_native::executor::AotContractExecutor;
+use cairo_native::executor::{AotContractExecutor, ContractExecutor};
 use starknet_api::block::BlockInfo;
 use starknet_api::contract_address;
 #[cfg(feature = "cairo_native")]
