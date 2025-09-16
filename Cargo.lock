@@ -4021,7 +4021,7 @@ dependencies = [
 [[package]]
 name = "cairo-native"
 version = "0.6.1"
-source = "git+https://github.com/lambdaclass/cairo_native.git?rev=73a00772a4f305ea0996019ebc113025e0467842#73a00772a4f305ea0996019ebc113025e0467842"
+source = "git+https://github.com/cptartur/cairo_native.git?branch=executor-trait#4d659400d4db104cc1e9b10aeca499c3c74b313e"
 dependencies = [
  "anyhow",
  "aquamarine",
