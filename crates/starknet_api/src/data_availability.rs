@@ -1,12 +1,9 @@
 use serde::{Deserialize, Serialize};
-use size_of::SizeOf;
 use starknet_types_core::felt::Felt;
 
 use crate::StarknetApiError;
 
-#[derive(
-    Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, SizeOf,
-)]
+#[derive(Clone, Copy, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(try_from = "Deserializer")]
 pub enum DataAvailabilityMode {
     L1 = 0,

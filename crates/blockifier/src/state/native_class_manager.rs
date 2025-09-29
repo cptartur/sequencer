@@ -1,5 +1,5 @@
+use std::sync::mpsc::{sync_channel, Receiver, SyncSender, TrySendError};
 use std::sync::Arc;
-use std::sync::mpsc::{Receiver, SyncSender, TrySendError, sync_channel};
 use std::time::Instant;
 
 use apollo_compilation_utils::class_utils::into_contract_class_for_compilation;
@@ -13,7 +13,9 @@ use starknet_api::state::SierraContractClass;
 use thiserror::Error;
 
 use crate::blockifier::config::{
-    CairoNativeRunConfig, ContractClassManagerConfig, NativeClassesWhitelist,
+    CairoNativeRunConfig,
+    ContractClassManagerConfig,
+    NativeClassesWhitelist,
 };
 use crate::execution::contract_class::{CompiledClassV1, RunnableCompiledClass};
 use crate::execution::native::contract_class::NativeCompiledClassV1;
@@ -104,7 +106,8 @@ impl NativeClassManager {
         // });
         //
         // // TODO(AVIV): Add private constructor with default values.
-        // NativeClassManager { cairo_native_run_config, cache, sender: Some(sender), compiler: None }
+        // NativeClassManager { cairo_native_run_config, cache, sender: Some(sender), compiler: None
+        // }
     }
 
     /// Returns the runnable compiled class for the given class hash, if it exists in cache.
@@ -161,8 +164,8 @@ impl NativeClassManager {
         //         // Cache the V1 class.
         //         self.cache.set(
         //             class_hash,
-        //             CompiledClasses::V1(compiled_class_v1.clone(), sierra_contract_class.clone()),
-        //         );
+        //             CompiledClasses::V1(compiled_class_v1.clone(),
+        // sierra_contract_class.clone()),         );
         //         if self.run_cairo_native() {
         //             // Send a non-blocking compilation request.
         //             // Ignore compilation errors for now.

@@ -6,7 +6,6 @@ use std::collections::HashMap;
 
 use cairo_lang_starknet_classes::contract_class::ContractEntryPoints as CairoLangContractEntryPoints;
 use serde::{Deserialize, Serialize};
-use size_of::SizeOf;
 use strum::EnumVariantNames;
 use strum_macros::{EnumDiscriminants, EnumIter, IntoStaticStr};
 
@@ -67,7 +66,7 @@ pub enum RpcTransaction {
     Invoke(RpcInvokeTransaction),
 }
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize, Hash, SizeOf)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize, Hash)]
 pub struct InternalRpcDeployAccountTransaction {
     pub tx: RpcDeployAccountTransaction,
     pub contract_address: ContractAddress,
@@ -93,7 +92,7 @@ impl TransactionHasher for InternalRpcDeployAccountTransaction {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize, Hash, EnumDiscriminants, SizeOf)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize, Hash, EnumDiscriminants)]
 #[strum_discriminants(
     name(InternalRpcTransactionLabelValue),
     derive(IntoStaticStr, EnumIter, EnumVariantNames),
@@ -138,7 +137,7 @@ impl InternalRpcTransactionWithoutTxHash {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize, Hash, SizeOf)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize, Hash)]
 pub struct InternalRpcTransaction {
     pub tx: InternalRpcTransactionWithoutTxHash,
     pub tx_hash: TransactionHash,
@@ -230,10 +229,7 @@ impl InternalRpcTransaction {
     }
 
     pub fn total_bytes(&self) -> u64 {
-        self.size_of()
-            .total_bytes()
-            .try_into()
-            .expect("The transaction size in bytes should fit in a u64 value.")
+        panic!("Intentionally not implemented")
     }
 
     pub fn tx_hash(&self) -> TransactionHash {
@@ -268,7 +264,7 @@ impl From<RpcDeclareTransaction> for DeclareTransaction {
 /// [`Starknet specs`].
 ///
 /// [`Starknet specs`]: https://github.com/starkware-libs/starknet-specs/blob/master/api/starknet_api_openrpc.json
-#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, SizeOf)]
+#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(tag = "version")]
 pub enum RpcDeployAccountTransaction {
     #[serde(rename = "0x3")]
@@ -323,7 +319,7 @@ impl TryFrom<DeployAccountTransactionV3> for RpcDeployAccountTransactionV3 {
 /// [`Starknet specs`].
 ///
 /// [`Starknet specs`]: https://github.com/starkware-libs/starknet-specs/blob/master/api/starknet_api_openrpc.json
-#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, SizeOf)]
+#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 #[serde(tag = "version")]
 pub enum RpcInvokeTransaction {
     #[serde(rename = "0x3")]
@@ -398,7 +394,7 @@ impl From<RpcDeclareTransactionV3> for DeclareTransactionV3 {
 }
 
 /// An [RpcDeclareTransactionV3] that contains a class hash instead of the full contract class.
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize, Hash, SizeOf)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize, Hash)]
 pub struct InternalRpcDeclareTransactionV3 {
     pub sender_address: ContractAddress,
     pub compiled_class_hash: CompiledClassHash,
@@ -487,7 +483,7 @@ impl From<InternalRpcDeclareTransactionV3> for DeclareTransaction {
 }
 
 /// A deploy account transaction that can be added to Starknet through the RPC.
-#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, SizeOf)]
+#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct RpcDeployAccountTransactionV3 {
     pub signature: TransactionSignature,
     pub nonce: Nonce,
@@ -561,7 +557,7 @@ impl TransactionHasher for RpcDeployAccountTransactionV3 {
 }
 
 /// An invoke account transaction that can be added to Starknet through the RPC.
-#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, SizeOf)]
+#[derive(Clone, Debug, Deserialize, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize)]
 pub struct RpcInvokeTransactionV3 {
     pub sender_address: ContractAddress,
     pub calldata: Calldata,

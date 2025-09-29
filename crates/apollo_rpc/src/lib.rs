@@ -113,15 +113,11 @@ impl SerializeConfig for RpcConfig {
             ),
             ser_param(
                 "ip",
-                &self.ip.to_string(), "The JSON RPC server ip.",
-                ParamPrivacyInput::Public
+                &self.ip.to_string(),
+                "The JSON RPC server ip.",
+                ParamPrivacyInput::Public,
             ),
-            ser_param(
-                "port",
-                &self.port,
-                "The JSON RPC server port.",
-                ParamPrivacyInput::Public
-            ),
+            ser_param("port", &self.port, "The JSON RPC server port.", ParamPrivacyInput::Public),
             ser_param(
                 "max_events_chunk_size",
                 &self.max_events_chunk_size,
